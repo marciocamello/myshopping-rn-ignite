@@ -1,5 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import React from 'react';
+import { Alert } from 'react-native';
 import { ButtonIcon } from '../ButtonIcon';
 import { Container, Info, Options, Quantity, Title } from './styles';
 
@@ -25,6 +26,29 @@ export function Product({ data }: Props) {
             });
     }
 
+    function handleRemoveProduct() {
+        Alert.alert(
+            'Remover produto',
+            'Tem certeza que deseja remover esse produto?',
+            [
+                {
+                    text: 'Cancelar',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Remover',
+                    onPress: () => {
+                        firestore()
+                            .collection('products')
+                            .doc(data.id)
+                            .delete();
+                    }
+                },
+            ],
+            { cancelable: false },
+        );
+    }
+
     return (
         <Container>
             <Info>
@@ -46,6 +70,7 @@ export function Product({ data }: Props) {
                 <ButtonIcon
                     icon="delete"
                     color="alert"
+                    onPress={handleRemoveProduct}
                 />
             </Options>
         </Container>
