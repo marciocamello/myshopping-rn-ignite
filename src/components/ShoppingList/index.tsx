@@ -1,5 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useState } from 'react';
 import { FlatList } from 'react-native';
 import { Product, ProductProps } from '../Product';
 import { styles } from './styles';
@@ -7,7 +8,7 @@ import { styles } from './styles';
 export function ShoppingList() {
     const [products, setProducts] = useState<ProductProps[]>([]);
 
-    useEffect(() => {
+    useFocusEffect(() => {
         const subscribe = firestore()
             .collection('products')
             .orderBy('description')
@@ -23,7 +24,7 @@ export function ShoppingList() {
             });
 
         return () => subscribe();
-    }, []);
+    });
 
     return (
         <FlatList
